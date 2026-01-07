@@ -1,0 +1,17 @@
+# load shared config
+source "$HOME/dotfiles/zsh/common.zsh"
+
+# os-specific
+case "$(uname)" in
+  Darwin)
+    source "$HOME/dotfiles/zsh/mac.zsh"
+    ;;
+  Linux)
+    source "$HOME/dotfiles/zsh/linux.zsh"
+    ;;
+esac
+
+# server-specific (hostname-based)
+if [[ "$(hostname)" == "server" || "$(hostname)" == "pi" ]]; then
+  source "$HOME/dotfiles/zsh/server.zsh"
+fi

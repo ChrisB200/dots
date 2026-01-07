@@ -1,0 +1,52 @@
+# -------------------------
+# OS / filesystem junk
+# -------------------------
+.DS_Store
+.AppleDouble
+.LSOverride
+Icon?
+._*
+
+# -------------------------
+# Editor state (neovim)
+# -------------------------
+*.swp
+*.swo
+*.swn
+*.tmp
+*~
+.netrwhist
+.session
+shada/
+vimundo/
+vimbackup/
+
+# -------------------------
+# Neovim plugins / caches
+# (only if you vendor plugins elsewhere)
+# -------------------------
+nvim/.cache/
+nvim/.local/
+nvim/lazy-lock.json
+
+# -------------------------
+# tmux runtime
+# -------------------------
+tmux/resurrect/
+tmux/continuum/
+
+# -------------------------
+# Logs / temp
+# -------------------------
+*.log
+
+# -------------------------
+# Secrets / machine-local
+# -------------------------
+.env
+.env.*
+*.key
+*.pem
+*.crt
+.secrets
+.is_server
