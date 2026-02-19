@@ -3,6 +3,7 @@ vim.cmd("filetype plugin indent on")
 require("config.remap")
 require("config.set")
 require("config.lazy")
+require("config.gdscript")
 
 -- override after theme loads
 vim.cmd([[
@@ -16,7 +17,7 @@ vim.cmd([[
 ]])
 
 vim.filetype.add({
-  extension = {
-    gd = "gdscript",
-  },
+	extension = {
+		gd = "gdscript",
+	},
 })

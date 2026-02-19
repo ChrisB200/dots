@@ -1,58 +1,65 @@
+-- Formatting: Conform.nvim configuration
 return {
-  {
-    "jayp0521/mason-null-ls.nvim",
-    config = function()
-      require("mason-null-ls").setup({
-        ensure_installed = {
-          "eslint_d",
-          "flake8",
-          "black",
-          "prettier",
-          "shellcheck",
-          "codespell",
-          "clang-format",
-          "pgformatter",
+    "stevearc/conform.nvim",
+    event = { "BufWritePre" },
+    cmd = { "ConformInfo" },
+    keys = {
+        {
+            "<leader>cf",
+            function()
+                require("conform").format({ async = true }, function(err, did_edit)
+                    if not err and did_edit then
+                        vim.notify("Formatted", vim.log.levels.INFO)
+                    end
+                end)
+            end,
+            mode = { "n", "v" },
+            desc = "Format",
         },
-        automatic_installation = true,
-      })
-    end,
-  },
-  {
-    "nvimtools/none-ls.nvim",
-    dependencies = {},
-    config = function()
-      local null_ls = require("null-ls")
+    },
+    opts = {
+        formatters_by_ft = {
+            -- Go
+            go = { "goimports", "gofmt" },
 
-      null_ls.setup({
-        sources = {
-          -- Formatters
-          null_ls.builtins.formatting.prettier,
-          null_ls.builtins.formatting.black,
-          null_ls.builtins.formatting.isort,
-          null_ls.builtins.formatting.clang_format,
-          null_ls.builtins.formatting.stylua,
-          null_ls.builtins.formatting.shfmt,
-          null_ls.builtins.formatting.blade_formatter,
+            -- Lua
+            lua = { "stylua" },
 
-          -- Diagnostics
-          null_ls.builtins.diagnostics.cppcheck,
-          null_ls.builtins.diagnostics.codespell,
+            -- Web technologies
+            javascript = { "prettier" },
+            typescript = { "prettier" },
+            javascriptreact = { "prettier" },
+            typescriptreact = { "prettier" },
+            json = { "prettier" },
+            jsonc = { "prettier" },
+            yaml = { "prettier" },
+            markdown = { "prettier" },
+            html = { "prettier" },
+            css = { "prettier" },
+            scss = { "prettier" },
+
+            -- Python
+            python = { "isort", "black" },
+
+            -- PHP/Laravel
+            php = { "pint" },
+
+            -- Shell
+            sh = { "shfmt" },
+            bash = { "shfmt" },
+
+            -- Other
+            rust = { "rustfmt" },
         },
-        -- OPTIONAL: debounce to avoid too many triggers
-        debounce = 150,
-      })
-
-      -- Format on save autocmd
-      vim.api.nvim_create_autocmd("BufWritePre", {
-        group = vim.api.nvim_create_augroup("FormatOnSave", { clear = true }),
-        callback = function()
-          -- Use the built-in LSP formatting method
-          vim.lsp.buf.format({ async = false })
-        end,
-      })
-
-      -- Map format key outside of null_ls.setup table
-      vim.keymap.set("n", "<leader>ff", vim.lsp.buf.format, {})
+        default_format_opts = {
+            lsp_format = "fallback",
+        },
+        format_on_save = {
+            timeout_ms = 500,
+            lsp_format = "fallback",
+        },
+    },
+    init = function()
+        vim.o.formatexpr = "v:lua.require'conform'.formatexpr()"
     end,
-  },
 }
